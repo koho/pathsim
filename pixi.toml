@@ -1,0 +1,21 @@
+[workspace]
+authors = ["Gerhard Tan <gwohau.tan@gmail.com>"]
+channels = ["conda-forge"]
+name = "pathsim"
+platforms = ["linux-64", "win-64"]
+version = "0.1.0"
+preview = ["pixi-build"]
+
+[tasks]
+build-release = { cmd = ["cmake", "--build", "build/release"]}
+
+[dependencies]
+freecad = { path = "./third_party/FreeCAD/package/rattler-build" }
+
+[target.linux-64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" ="extra_args", "default" = "" }], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+
+[target.win-64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}

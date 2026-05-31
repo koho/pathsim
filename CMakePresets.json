@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "include": [
+    "third_party/FreeCAD/CMakePresets.json"
+  ]
+}
