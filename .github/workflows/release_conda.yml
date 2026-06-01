@@ -60,6 +60,7 @@ jobs:
         with:
           pixi-version: v0.59.0
           cache: false
+          run-install: false
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
