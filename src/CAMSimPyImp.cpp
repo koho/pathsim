@@ -170,6 +170,19 @@ PyObject* CAMSimPy::AddCommand(PyObject* args)
     return Py_None;
 }
 
+PyObject* CAMSimPy::SetNumSamples(PyObject* args)
+{
+    int samples;
+    if (!PyArg_ParseTuple(args, "i", &samples)) {
+        return nullptr;
+    }
+    CAMSim* sim = getCAMSimPtr();
+    sim->SetNumSamples(samples);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 PyObject* CAMSimPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;

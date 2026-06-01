@@ -58,3 +58,10 @@ class CAMSim(BaseClass):
 
                   Add a path command to the simulation."""
         ...
+
+    def SetNumSamples(self, samples: int) -> Any:
+        """
+        SetNumSamples(samples):
+
+                  Set the Anti-Aliasing modes of the rendered 3D scene."""
+        ...

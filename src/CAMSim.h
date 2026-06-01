@@ -75,6 +75,7 @@ public:
     );
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
+    void SetNumSamples(int samples);
 
 public:
     std::unique_ptr<SimStock> m_stock;

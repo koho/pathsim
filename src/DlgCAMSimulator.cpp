@@ -41,6 +41,8 @@ namespace CAMSimulator
 
 static const float MouseScrollDelta = 120.0F;
 
+int DlgCAMSimulator::numSamples = 0;
+
 DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
     : QWindow(parent)
 {
@@ -322,7 +324,7 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         QSurfaceFormat format;
         format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
         format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
-        int samples = Gui::View3DInventorViewer::getNumSamples();
+        int samples = numSamples;
         if (samples > 1) {
             format.setSamples(samples);
         }

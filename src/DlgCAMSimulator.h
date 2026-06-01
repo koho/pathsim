@@ -63,6 +63,7 @@ class DlgCAMSimulator: public QWindow, public QOpenGLExtraFunctions
 {
     Q_OBJECT
 public:
+    static int numSamples;
     explicit DlgCAMSimulator(QWindow* parent = nullptr);
     ~DlgCAMSimulator() override;
 

@@ -70,3 +70,8 @@ void CAMSim::AddCommand(Command* cmd)
     std::string gline = cmd->toGCode();
     DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
 }
+
+void CAMSim::SetNumSamples(int samples)
+{
+    DlgCAMSimulator::numSamples = samples;
+}
