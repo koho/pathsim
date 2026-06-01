@@ -1,8 +1,8 @@
 context:
   version: "1.2.0dev"
-  sys_userprofile: ${{ env.get("USERPROFILE") }}
-  sys_localappdata: ${{ env.get("LOCALAPPDATA") }}
-  sys_appdata: ${{ env.get("APPDATA") }}
+  sys_userprofile: ${{ env.get("USERPROFILE") | default("") }}
+  sys_localappdata: ${{ env.get("LOCALAPPDATA") | default("") }}
+  sys_appdata: ${{ env.get("APPDATA") | default("") }}
   sys_path: ${{ env.get("PATH") }}
 
 package:
@@ -30,8 +30,8 @@ build:
     - if: unix
       then:
         - mkdir -p "$PREFIX/Library/Mod/CAM"
-        - cp build/release/Mod/CAM/PathSim.pyd "$PREFIX/Library/Mod/CAM"
-        - cp $RECIPE_DIR/PathSim.pyi "$PREFIX/Library/Mod/CAM"
+        - cp build/release/Mod/CAM/PathSim.so "$PREFIX/Library/Mod/CAM/"
+        - cp $RECIPE_DIR/PathSim.pyi "$PREFIX/Library/Mod/CAM/"
 
 requirements:
   run:
