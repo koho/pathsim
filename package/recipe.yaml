@@ -18,17 +18,21 @@ build:
   number: 0
   merge_build_and_host_envs: true
   script:
-    - echo "add_subdirectory(App)" > src/Mod/CAM/PathSimulator/CMakeLists.txt
-    - echo "add_subdirectory(Dialog)" >> src/Mod/CAM/PathSimulator/CMakeLists.txt
-    - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'configure-release'], env=env, check=True)"
-    - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'build-release'], env=env, check=True)"
     - if: win
       then:
+        - echo add_subdirectory(App) > src\Mod\CAM\PathSimulator\CMakeLists.txt
+        - echo add_subdirectory(Dialog) >> src\Mod\CAM\PathSimulator\CMakeLists.txt
+        - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'configure-release'], env=env, check=True)"
+        - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'build-release'], env=env, check=True)"
         - mkdir "%PREFIX%\Library\Mod\CAM"
         - copy build\release\Mod\CAM\PathSim.pyd "%PREFIX%\Library\Mod\CAM"
         - copy %RECIPE_DIR%\PathSim.pyi "%PREFIX%\Library\Mod\CAM"
     - if: unix
       then:
+        - echo "add_subdirectory(App)" > src/Mod/CAM/PathSimulator/CMakeLists.txt
+        - echo "add_subdirectory(Dialog)" >> src/Mod/CAM/PathSimulator/CMakeLists.txt
+        - python -c "import subprocess, os; env = os.environ.copy(); env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'configure-release'], env=env, check=True)"
+        - python -c "import subprocess, os; env = os.environ.copy(); env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'build-release'], env=env, check=True)"
         - mkdir -p "$PREFIX/Library/Mod/CAM"
         - cp build/release/Mod/CAM/PathSim.so "$PREFIX/Library/Mod/CAM/"
         - cp $RECIPE_DIR/PathSim.pyi "$PREFIX/Library/Mod/CAM/"
