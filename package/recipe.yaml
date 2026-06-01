@@ -1,8 +1,8 @@
 context:
   version: "1.2.0dev"
-  sys_userprofile: ${{ env.get("USERPROFILE") | default("") }}
-  sys_localappdata: ${{ env.get("LOCALAPPDATA") | default("") }}
-  sys_appdata: ${{ env.get("APPDATA") | default("") }}
+  sys_userprofile: ${{ env.get_default("USERPROFILE", "") }}
+  sys_localappdata: ${{ env.get_default("LOCALAPPDATA", "") }}
+  sys_appdata: ${{ env.get_default("APPDATA", "") }}
   sys_path: ${{ env.get("PATH") }}
 
 package:
