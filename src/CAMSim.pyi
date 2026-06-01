@@ -59,7 +59,7 @@ class CAMSim(BaseClass):
                   Add a path command to the simulation."""
         ...
 
-    def SetNumSamples(self, samples: int) -> Any:
+    def SetNumSamples(self, samples: int, /) -> Any:
         """
         SetNumSamples(samples):
 

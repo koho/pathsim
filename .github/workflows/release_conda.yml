@@ -1,0 +1,114 @@
+name: Release Conda
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: build-release-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { target: linux-64, os: ubuntu-22.04 }
+          - { target: win-64, os: windows-latest }
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+    environment: weekly-build
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      # prevent running out of disk space on Ubuntu runners.
+      - name: Maximize build space
+        if: runner.os == 'Linux'
+        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
+        with:
+          verbose: 'true'
+          remove-android: 'true'      # (frees ~9 GB)
+          remove-cached-tools: 'true' # (frees ~8.3 GB)
+
+      - name: Set platform environment variables
+        shell: bash -l {0}
+        env:
+          OPERATING_SYSTEM: ${{ runner.os }}
+        run: |
+          if [[ $OPERATING_SYSTEM == 'Windows' ]]; then
+            echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+            echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          fetch-tags: true
+          submodules: 'recursive'
+
+      - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+        with:
+          pixi-version: v0.59.0
+          cache: false
+
+      - name: Setup .NET 10 SDK
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          dotnet-version: '10.0.103'
+
+      - name: Build packages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          cd package
+          pixi exec rattler-build build
+
+      - name: Upload release files
+        uses: actions/upload-artifact@v4
+        with:
+          name: conda-${{ matrix.target }}
+          path: package/output/**/*.conda
+
+      ## Needed if running on a self-hosted runner:
+      # - name: Clean up keychain and provisioning profile
+      #   if: ${{ always() }}
+      #   run: |
+      #     security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+      #     rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: conda-incubator/setup-miniconda@v4
+        with:
+          auto-update-conda: true
+
+      - name: Install Anaconda Client
+        run: conda install anaconda-client -y
+
+      - name: Collect files
+        uses: actions/download-artifact@v4
+        with:
+          pattern: conda-*
+          merge-multiple: true
+
+      - name: Upload packages
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+        run: find . -name "*.conda" -exec $CONDA/bin/anaconda upload {} \;
