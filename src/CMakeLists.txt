@@ -71,34 +71,37 @@ SET(CAMSimulator_SRCS_precomp
     ${CAMSimulator_SRCS_Python}
 )
 
+qt_add_resources(PathResource_SRCS ../../Gui/Resources/Path.qrc)
+
 SET(CAMSimulator_SRCS
     ${CAMSimulator_SRCS_precomp}
     ${CAMSimulator_SRCS_Core}
+    ${PathResource_SRCS}
 )
 
-add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
+add_library(PathSim SHARED ${CAMSimulator_SRCS})
 target_include_directories(
-    CAMSimulator
+    PathSim
     PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
 )
-target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
+target_link_libraries(PathSim ${CAMSimulator_LIBS})
 
 if(FREECAD_USE_PCH)
-    target_precompile_headers(CAMSimulator PRIVATE
+    target_precompile_headers(PathSim PRIVATE
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
     )
     set_source_files_properties(${CAMSimulator_SRCS_Core} PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(CAMSimulator)
+    target_compile_warn_error(PathSim)
 endif()
 
-SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
-SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)
+SET_BIN_DIR(PathSim PathSim /Mod/CAM)
+SET_PYTHON_PREFIX_SUFFIX(PathSim)
 
-INSTALL(TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})
+INSTALL(TARGETS PathSim DESTINATION ${CMAKE_INSTALL_LIBDIR})

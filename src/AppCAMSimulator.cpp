@@ -36,9 +36,9 @@ class Module: public Py::ExtensionModule<Module>
 {
 public:
     Module()
-        : Py::ExtensionModule<Module>("CAMSimulator")
+        : Py::ExtensionModule<Module>("PathSim")
     {
-        initialize("This module is the CAMSimulator module.");  // register with Python
+        initialize("This module is the PathSim module.");  // register with Python
     }
 
     ~Module() override
@@ -57,7 +57,7 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMOD_INIT_FUNC(CAMSimulator)
+PyMOD_INIT_FUNC(PathSim)
 {
     // load dependent module
     try {
@@ -72,7 +72,7 @@ PyMOD_INIT_FUNC(CAMSimulator)
 
     //
     PyObject* mod = CAMSimulator::initModule();
-    Base::Console().log("Loading CAMSimulator module.... done\n");
+    Base::Console().log("Loading PathSim module.... done\n");
 
     // Add Types to module
     Base::Interpreter().addType(&CAMSimulator::CAMSimPy::Type, mod, "PathSim");

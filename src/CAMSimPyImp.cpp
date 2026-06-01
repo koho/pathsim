@@ -30,6 +30,12 @@
 #include <Mod/CAM/App/CommandPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
+#include <FCGlobal.h>
+#ifdef CAMSimulatorExport
+#undef CAMSimulatorExport
+#define CAMSimulatorExport FREECAD_DECL_EXPORT
+#endif
+
 // inclusion of the generated files (generated out of CAMSimPy.xml)
 #include "CAMSimPy.h"
 #include "CAMSimPy.cpp"

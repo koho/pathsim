@@ -35,6 +35,12 @@
 
 #include "DlgCAMSimulator.h"
 
+#include <FCGlobal.h>
+// PathSim
+#ifndef PathSimExport
+#define PathSimExport FREECAD_DECL_EXPORT
+#endif
+
 using namespace Path;
 
 namespace CAMSimulator
@@ -42,7 +48,7 @@ namespace CAMSimulator
 
 /** The representation of a CNC Toolpath Simulator */
 
-class CAMSimulatorExport CAMSim: public Base::BaseClass
+class PathSimExport CAMSim: public Base::BaseClass
 {
     // TYPESYSTEM_HEADER();
 

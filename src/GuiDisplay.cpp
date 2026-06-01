@@ -214,6 +214,7 @@ bool GuiDisplay::InitGui()
     mShader.CompileShader("GuiDisplay", (char*)VertShader2DTex, (char*)FragShader2dTex);
     mShader.UpdateTextureSlot(0);
 
+    UpdatePlayState(false);
     UpdateSimSpeed(1);
     UpdateProjection();
     guiInitiated = true;
@@ -228,6 +229,7 @@ void GuiDisplay::ResetGui()
     }
     mTexture.DestroyTexture();
     GLDELETE_BUFFER(mIbo);
+    UpdatePlayState(false);
     guiInitiated = false;
 }
 

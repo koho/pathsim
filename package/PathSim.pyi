@@ -1,26 +1,8 @@
 from typing import Any
 
-from Base.BaseClass import BaseClass
-from Base.Metadata import export
-from Metadata import no_args
-
-@export(
-    Include="Mod/CAM/PathSimulator/Dialog/CAMSim.h",
-    FatherInclude="Base/BaseClassPy.h",
-    Namespace="CAMSimulator",
-    Constructor=True,
-    Delete=True,
-)
-class CAMSim(BaseClass):
+class PathSim:
     """
     FreeCAD python wrapper of CAMSimulator
-
-          CAMSimulator.CAMSim():
-
-          Create a path simulator object
-
-    Author: Shai Seger (shaise_at_g-mail)
-    License: LGPL-2.1-or-later
     """
 
     def BeginSimulation(self, **kwargs) -> Any:
@@ -30,7 +12,6 @@ class CAMSim(BaseClass):
                   Start a simulation process on a box shape stock with given resolution"""
         ...
 
-    @no_args
     def ResetSimulation(self) -> Any:
         """
         ResetSimulation():
@@ -52,7 +33,7 @@ class CAMSim(BaseClass):
                   Set the shape of the base object of the job"""
         ...
 
-    def AddCommand(self) -> Any:
+    def AddCommand(self, **kwargs) -> Any:
         """
         AddCommand(command):
 
