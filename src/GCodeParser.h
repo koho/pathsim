@@ -42,13 +42,13 @@ public:
     GCodeParser()
     {}
     virtual ~GCodeParser();
+    void Clear();
     bool Parse(const char* filename);
     bool AddLine(const char* ptr);
 
 public:
     std::vector<MillMotion> Operations;
     MillMotion lastState = {eNop, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    MillMotion lastLastState = {eNop, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 protected:
     const char* GetNextToken(const char* ptr, GCToken* token);

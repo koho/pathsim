@@ -53,7 +53,7 @@ void MillSimulation::ClearMillPathSegments()
 
 void MillSimulation::Clear()
 {
-    mCodeParser.Operations.clear();
+    mCodeParser.Clear();
     for (unsigned int i = 0; i < mToolTable.size(); i++) {
         delete mToolTable[i];
     }
