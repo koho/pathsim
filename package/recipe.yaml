@@ -38,4 +38,4 @@ build:
 
 requirements:
   run:
-    - freecad=1.2.0dev
+    - freecad=26.3.0dev
