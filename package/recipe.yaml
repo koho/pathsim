@@ -15,7 +15,7 @@ source:
     target_directory: src/Mod/CAM/PathSimulator/Dialog
 
 build:
-  number: 0
+  number: 1
   script:
     - if: win
       then:
@@ -24,7 +24,8 @@ build:
         - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'configure-release'], env=env, check=True)"
         - python -c "import subprocess, os; env = os.environ.copy(); env['USERPROFILE'] = r'${{ sys_userprofile }}'; env['LOCALAPPDATA'] = r'${{ sys_localappdata }}'; env['APPDATA'] = r'${{ sys_appdata }}'; env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'build-release'], env=env, check=True)"
         - mkdir "%PREFIX%\Library\Mod\CAM"
-        - copy build\release\Mod\CAM\PathSim.pyd "%PREFIX%\Library\Mod\CAM"
+        - mkdir "%PREFIX%\Library\lib"
+        - copy build\release\Mod\CAM\PathSim.pyd "%PREFIX%\Library\lib"
         - copy %RECIPE_DIR%\PathSim.pyi "%PREFIX%\Library\Mod\CAM"
     - if: unix
       then:
@@ -33,7 +34,8 @@ build:
         - python -c "import subprocess, os; env = os.environ.copy(); env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'configure-release'], env=env, check=True)"
         - python -c "import subprocess, os; env = os.environ.copy(); env['PATH'] = r'${{ sys_path }}'; subprocess.run(['pixi', 'run', 'build-release'], env=env, check=True)"
         - mkdir -p "$PREFIX/Library/Mod/CAM"
-        - cp build/release/Mod/CAM/PathSim.so "$PREFIX/Library/Mod/CAM/"
+        - mkdir -p "$PREFIX/Library/lib"
+        - cp build/release/Mod/CAM/PathSim.so "$PREFIX/Library/lib/"
         - cp $RECIPE_DIR/PathSim.pyi "$PREFIX/Library/Mod/CAM/"
 
 requirements:
