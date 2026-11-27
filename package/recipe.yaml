@@ -15,7 +15,7 @@ source:
     target_directory: src/Mod/CAM/PathSimulator/Dialog
 
 build:
-  number: 2
+  number: 3
   script:
     - if: win
       then:
